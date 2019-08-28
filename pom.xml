@@ -13,10 +13,10 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<encoding>UTF-8</encoding>
 		<!-- Put the Scala version of the cluster -->
-		<scala.version>2.11.12</scala.version>
+		<scala.version>2.11.8</scala.version>
 		<scala.binary.version>2.11</scala.binary.version>
-		<spark.version>2.3.3</spark.version>
-		<xgboost4j-spark.version>0.82</xgboost4j-spark.version>
+		<spark.version>2.3.0</spark.version>
+		<xgboost4j-spark.version>0.72</xgboost4j-spark.version>
 	</properties>
 
 	<!-- repository to add org.apache.spark -->
