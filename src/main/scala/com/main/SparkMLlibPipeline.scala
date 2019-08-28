@@ -7,7 +7,7 @@ import org.apache.spark.ml.tuning._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types._
 
-import ml.dmlc.xgboost4j.scala.spark.{XGBoostClassifier, XGBoostClassificationModel}
+import ml.dmlc.xgboost4j.scala.spark.{XGBoostEstimator, XGBoostClassificationModel, XGBoost, XGBoostModel}
 
 // this example works with Iris dataset (https://archive.ics.uci.edu/ml/datasets/iris)
 
@@ -53,7 +53,7 @@ object SparkMLlibPipeline {
     rawInput.show()
 
     // Split training and test dataset
-    val Array(training, test) = rawInput.randomSplit(Array(0.8, 0.2), 123)
+    var Array(training, test) = rawInput.randomSplit(Array(0.8, 0.2), 123)
 
     // Build ML pipeline, it includes 4 stages:
     // 1, Assemble all features into a single vector column.
@@ -69,12 +69,22 @@ object SparkMLlibPipeline {
     //   .setOutputCol("classIndex")
     //   .fit(training)
 
-    val booster = new XGBoostClassifier()
-    booster.setMaxDepth(3)
-    booster.setNumClass(2)
-    booster.setFeaturesCol("features")
-    booster.setLabelCol("is_overdue")
-    booster.setPredictionCol("predictionCol")
+//    val booster = new XGBoostClassifier()
+//    booster.setMaxDepth(3)
+//    booster.setNumClass(2)
+//    booster.setFeaturesCol("features")
+//    booster.setLabelCol("is_overdue")
+//    booster.setPredictionCol("predictionCol")
+
+    training = assembler.transform(training)
+    val paramMap = List(
+      "eta" -> 0.1f,
+      "max_depth" -> 2,
+      "objective" -> "binary:logistic").toMap
+    val booster = XGBoost.trainWithDataFrame(
+      training, paramMap, round = 10, nWorkers = 1, useExternalMemory = true).setLabelCol("is_overdue").setFeaturesCol("features")
+    // xgboost-spark appends the column containing prediction results
+    booster.transform(training).show()
 
     // val labelConverter = new IndexToString()
     //   .setInputCol("prediction")
@@ -116,7 +126,7 @@ object SparkMLlibPipeline {
     println("[SparkMLlibPipeline] save model ==========================================")
     // Export the XGBoostClassificationModel as local XGBoost model,
     // then you can load it back in local Python environment.
-    bestModel.nativeBooster.saveModel(nativeModelPath)
+    // bestModel.nativeBooster.saveModel(nativeModelPath)
 
     // ML pipeline persistence
     model.write.overwrite().save(pipelineModelPath)
