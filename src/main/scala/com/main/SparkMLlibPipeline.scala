@@ -33,18 +33,18 @@ object SparkMLlibPipeline {
 
     // Load dataset
     val schema = new StructType(Array(
-      StructField("unique_id", IntegerType, false),
-      StructField("sample_day", StringType, false),
-      StructField("tag", IntegerType, false),
-      StructField("gender", IntegerType, false),
-      StructField("age_g", IntegerType, false),
-      StructField("city", IntegerType, false),
-      StructField("zmscore_g", IntegerType, false),
-      StructField("bscore_g", IntegerType, false),
-      StructField("td_score_g", IntegerType, false),
-      StructField("ivs3_score_g", IntegerType, false),
-      StructField("is_overdue_user", IntegerType, false),
-      StructField("is_overdue", IntegerType, false)
+      StructField("unique_id", IntegerType, true),
+      StructField("sample_day", StringType, true),
+      StructField("tag", IntegerType, true),
+      StructField("gender", IntegerType, true),
+      StructField("age_g", IntegerType, true),
+      StructField("city", IntegerType, true),
+      StructField("zmscore_g", IntegerType, true),
+      StructField("bscore_g", IntegerType, true),
+      StructField("td_score_g", IntegerType, true),
+      StructField("ivs3_score_g", IntegerType, true),
+      StructField("is_overdue_user", IntegerType, true),
+      StructField("is_overdue", IntegerType, true)
     ))
 
     var rawInput = spark.read.schema(schema).option("header", true).option("sep", "\t").csv(inputPath)
@@ -69,12 +69,18 @@ object SparkMLlibPipeline {
     //   .setOutputCol("classIndex")
     //   .fit(training)
 
-    val booster = new XGBoostClassifier()
-    booster.setMaxDepth(3)
-    booster.setNumClass(2)
+    val booster = new XGBoostClassifier(
+      Map("eta" -> 0.1f,
+        "max_depth" -> 5,
+        "objective" -> "multi:softprob",
+        "num_class" -> 2,
+        "num_round" -> 100,
+        "num_workers" -> 1
+      )
+    )
     booster.setFeaturesCol("features")
     booster.setLabelCol("is_overdue")
-    booster.setPredictionCol("predictionCol")
+    // booster.setPredictionCol("predictionCol")
 
     // val labelConverter = new IndexToString()
     //   .setInputCol("prediction")
@@ -93,6 +99,7 @@ object SparkMLlibPipeline {
     val evaluator = new MulticlassClassificationEvaluator()
     evaluator.setLabelCol("is_overdue")
     evaluator.setPredictionCol("prediction")
+
     val accuracy = evaluator.evaluate(prediction)
     println("The model accuracy is : " + accuracy)
 
