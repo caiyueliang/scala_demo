@@ -51,7 +51,7 @@ object XGBoostPipeline {
 
     val rawInput = spark.read.schema(schema).csv(inputPath)
     rawInput.show()
-    
+
     // Split training and test dataset
     val Array(training, test) = rawInput.randomSplit(Array(0.8, 0.2), 123)
 
