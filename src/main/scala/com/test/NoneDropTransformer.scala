@@ -12,6 +12,7 @@ class NoneDropTransformer(override val uid: String) extends Transformer with Def
 
   def this() = this(Identifiable.randomUID("NoneDropTransformer"))
   def setInputCols(value: Array[String]): this.type = set(inputCols, value)
+  def getInputCols: Array[String] = getOrDefault(inputCols)
   def setHow(value: String): this.type = set(how, value)
   def getHow: String = getOrDefault(how)
 
@@ -22,7 +23,7 @@ class NoneDropTransformer(override val uid: String) extends Transformer with Def
     dataset.na.drop(h, inCols)
   }
 
-  override def copy(extra: ParamMap): ColRenameTransformer = defaultCopy(extra)
+  override def copy(extra: ParamMap): NoneDropTransformer = defaultCopy(extra)
   override def transformSchema(schema: StructType): StructType = schema
 }
 
