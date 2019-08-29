@@ -11,10 +11,10 @@ class NoneDropTransformer(override val uid: String) extends Transformer with Def
   val how = new Param[String](this, "how", "how: any or all")
 
   def this() = this(Identifiable.randomUID("NoneDropTransformer"))
-  def setInputCols(value: Array[String]): this.type = set(inputCols, value)
-  def getInputCols: Array[String] = getOrDefault(inputCols)
-  def setHow(value: String): this.type = set(how, value)
-  def getHow: String = getOrDefault(how)
+  def setInputCols(value: Array[String]): this.type = { set(inputCols, value) }
+  def getInputCols: Array[String] = { getOrDefault(inputCols) }
+  def setHow(value: String): this.type = { set(how, value) }
+  def getHow: String = { getOrDefault(how) }
 
   override def transform(dataset: Dataset[_]): DataFrame = {
     val h = extractParamMap.getOrElse(how, "all")
@@ -23,8 +23,8 @@ class NoneDropTransformer(override val uid: String) extends Transformer with Def
     dataset.na.drop(h, inCols)
   }
 
-  override def copy(extra: ParamMap): NoneDropTransformer = defaultCopy(extra)
-  override def transformSchema(schema: StructType): StructType = schema
+  override def copy(extra: ParamMap): NoneDropTransformer = { defaultCopy(extra) }
+  override def transformSchema(schema: StructType): StructType = { schema }
 }
 
 object NoneDropTransformer extends DefaultParamsReadable[NoneDropTransformer] {
