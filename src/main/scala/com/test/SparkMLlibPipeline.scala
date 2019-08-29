@@ -1,15 +1,12 @@
-package com.main
+package com.test
 
-import org.apache.spark.ml.{Pipeline, PipelineModel}
+import ml.dmlc.xgboost4j.scala.spark.{XGBoostClassificationModel, XGBoostClassifier}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
-import org.apache.spark.ml.feature._
-import org.apache.spark.ml.tuning._
+import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
+import org.apache.spark.ml.{Pipeline, PipelineModel}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types._
-
-import ml.dmlc.xgboost4j.scala.spark.{XGBoostClassifier, XGBoostClassificationModel}
-
-// this example works with Iris dataset (https://archive.ics.uci.edu/ml/datasets/iris)
+import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
 object SparkMLlibPipeline {
 
@@ -133,4 +130,3 @@ object SparkMLlibPipeline {
     model2.transform(test).show(false)
   }
 }
-

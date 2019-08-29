@@ -1,28 +1,12 @@
-package com.main
+package com.test
 
-/*
- Copyright (c) 2014 by Contributors
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- http://www.apache.org/licenses/LICENSE-2.0
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
-
-import org.apache.spark.ml.{Pipeline, PipelineModel}
+import ml.dmlc.xgboost4j.scala.spark.{XGBoostClassificationModel, XGBoostClassifier}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
-import org.apache.spark.ml.feature._
-import org.apache.spark.ml.tuning._
+import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler}
+import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
+import org.apache.spark.ml.{Pipeline, PipelineModel}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types._
-
-import ml.dmlc.xgboost4j.scala.spark.{XGBoostClassifier, XGBoostClassificationModel}
-
-// this example works with Iris dataset (https://archive.ics.uci.edu/ml/datasets/iris)
+import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 
 object XGBoostPipeline {
   def main(args: Array[String]): Unit = {
