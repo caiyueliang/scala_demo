@@ -7,19 +7,19 @@ import org.apache.spark.sql.{ DataFrame, Dataset }
 import org.apache.spark.sql.types.StructType
 
 class NoneDropTransformer(override val uid: String) extends Transformer with DefaultParamsWritable {
-  def this() = this(Identifiable.randomUID("NoneDropTransformer"))
-  def setInputCol(value: String): this.type = set(inputCol, value)
-  def setOutputCol(value: String): this.type = set(outputCol, value)
-  def getOutputCol: String = getOrDefault(outputCol)
+  val inputCols = new Param[Array[String]](this, "inputCols", "input columns")
+  val how = new Param[String](this, "how", "how: any or all")
 
-  val inputCol = new Param[String](this, "inputCol", "input column")
-  val outputCol = new Param[String](this, "outputCol", "output column")
+  def this() = this(Identifiable.randomUID("NoneDropTransformer"))
+  def setInputCols(value: Array[String]): this.type = set(inputCols, value)
+  def setHow(value: String): this.type = set(how, value)
+  def getHow: String = getOrDefault(how)
 
   override def transform(dataset: Dataset[_]): DataFrame = {
-    val outCol = extractParamMap.getOrElse(outputCol, "output")
-    val inCol = extractParamMap.getOrElse(inputCol, "input")
+    val h = extractParamMap.getOrElse(how, "all")
+    val inCols = extractParamMap.getOrElse(inputCols, Array("input"))
 
-    dataset.drop(outCol).withColumnRenamed(inCol, outCol)
+    dataset.na.drop(h, inCols)
   }
 
   override def copy(extra: ParamMap): ColRenameTransformer = defaultCopy(extra)
