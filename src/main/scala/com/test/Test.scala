@@ -76,17 +76,21 @@ class BYDCar extends Car {
 // 特质：抽象方法不需要使用abstract关键字，特质中没有方法体的方法，默认就是抽象方法
 trait CarId{
   var id: Int
-  def currentId(): Int                    // 定义了一个抽象方法
+  def currentId(): Int                          // 定义了一个抽象方法
 }
 
-class BYDCarId extends CarId{             // 使用extends关键字
-  override var id = 10000                 // BYD汽车编号从10000开始
-  def currentId(): Int = {id += 1; id}    // 返回汽车编号
+trait CarGreeting{
+  def greeting(msg: String) { println(msg) }
 }
 
-class BMWCarId extends CarId{             // 使用extends关键字
-  override var id = 20000                 // BMW汽车编号从20000开始
-  def currentId(): Int = {id += 1; id}    // 返回汽车编号
+class BYDCarId extends CarId with CarGreeting{  // 使用extends关键字混入第1个特质，后面可以反复使用with关键字混入更多特质
+  override var id = 10000                       // BYD汽车编号从10000开始
+  def currentId(): Int = {id += 1; id}          // 返回汽车编号
+}
+
+class BMWCarId extends CarId with CarGreeting{  // 使用extends关键字混入第1个特质，后面可以反复使用with关键字混入更多特质
+  override var id = 20000                       // BMW汽车编号从10000开始
+  def currentId(): Int = {id += 1; id}          // 返回汽车编号
 }
 
 // ===============================================================
@@ -147,5 +151,12 @@ object Person {
     myCar1.info()
     myCar2.greeting()
     myCar2.info()
+
+    val myCarId1 = new BYDCarId()
+    val myCarId2 = new BMWCarId()
+    myCarId1.greeting("Welcome my first car.")
+    printf("My first CarId is %d.\n", myCarId1.currentId)
+    myCarId2.greeting("Welcome my second car.")
+    printf("My second CarId is %d.\n", myCarId2.currentId)
   }
 }
