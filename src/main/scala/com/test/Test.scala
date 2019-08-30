@@ -27,5 +27,54 @@ object Person {
     val person2 = new Person("Minxing")
     person1.info()
     person2.info()
+
+    val myObject = new TestApplyClass
+    println(myObject("param1"))
+    println(TestApplyObject("param2"))
+    println(TestApplyObject("param2", 123))
+
+    val a = ApplyTest() //这里会调用伴生对象中的apply方法
+    a.greetingOfClass
+    a() // 这里会调用伴生类中的apply方法         
+  }
+}
+
+class ApplyTest{
+  def apply() = println("apply method in class is called!")
+  def greetingOfClass: Unit ={
+    println("Greeting method in class is called.")
+  }
+}
+object ApplyTest{
+  def apply() = {
+    println("apply method in object is called")
+    new ApplyTest()
+  }
+}
+
+class TestApplyClass {
+
+  def apply(param: String): String = {
+
+    println("apply method called, parameter is: " + param)
+
+    "Hello World!"
+  }
+}
+
+object TestApplyObject {
+
+  def apply(param: String): String = {
+
+    println("apply method called, parameter is: " + param)
+
+    "Hello World!"
+  }
+
+  def apply(param: String, int: Int): String = {
+
+    println("apply method called, parameter is: " + param + int.toString)
+
+    "Hello World!"
   }
 }
