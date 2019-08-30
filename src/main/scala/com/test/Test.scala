@@ -90,5 +90,7 @@ object Person {
     b.greetingOfClass
     println("555555")
     b()
+
+    // Array("BigData","Hadoop","Spark")
   }
 }
