@@ -91,6 +91,7 @@ object Person {
     println("555555")
     b()
 
-    // Array("BigData","Hadoop","Spark")
+    // Array中含有apply和update
+    Array("BigData","Hadoop","Spark")
   }
 }
