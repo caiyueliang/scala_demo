@@ -16,7 +16,8 @@ class Person {
 
 object Person {
   private var lastId = 0                    // 一个人的身份编号
-  private def newPersonId() = {
+  // private def newPersonId() = {
+  def newPersonId() = {
     lastId = lastId + 1
     lastId
   }
