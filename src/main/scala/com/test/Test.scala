@@ -73,6 +73,23 @@ class BYDCar extends Car {
 }
 
 // ===============================================================
+// 特质：抽象方法不需要使用abstract关键字，特质中没有方法体的方法，默认就是抽象方法
+trait CarId{
+  var id: Int
+  def currentId(): Int                    // 定义了一个抽象方法
+}
+
+class BYDCarId extends CarId{             // 使用extends关键字
+  override var id = 10000                 // BYD汽车编号从10000开始
+  def currentId(): Int = {id += 1; id}    // 返回汽车编号
+}
+
+class BMWCarId extends CarId{             // 使用extends关键字
+  override var id = 20000                 // BMW汽车编号从20000开始
+  def currentId(): Int = {id += 1; id}    // 返回汽车编号
+}
+
+// ===============================================================
 class Person {
   private val lastId = 0
   private val id = Person.newPersonId()     // 调用了伴生对象中的方法，返回lastId，会自增
@@ -122,7 +139,7 @@ object Person {
     b()
 
     // Array中含有apply和update
-    // Array("BigData","Hadoop","Spark")
+    Array("BigData","Hadoop","Spark")
 
     val myCar1 = new BMWCar()
     val myCar2 = new BYDCar()
