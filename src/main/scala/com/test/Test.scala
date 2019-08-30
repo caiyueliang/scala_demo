@@ -91,7 +91,7 @@ object Person {
     println("222222")
     a()                 // 这里会调用伴生类中的apply方法
     a() = "CCCCC"
-    
+
     println("333333")
     val b = new ApplyTest()
     println("444444")
