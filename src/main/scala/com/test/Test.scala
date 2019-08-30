@@ -51,6 +51,28 @@ object TestApplyObject {
 }
 
 // ===============================================================
+// 抽象类
+abstract class Car{       // 是抽象类，不能直接被实例化
+  val carBrand: String    // 字段没有初始化值，就是一个抽象字段
+  def info()              // 抽象方法，不需要使用abstract关键字
+  def greeting() {println("Welcome to my car!")}
+}
+
+// 扩展类：继承抽象类
+class BMWCar extends Car {
+  override val carBrand = "BMW"                                     // 重写超类字段，需要使用override关键字，否则编译会报错
+  def info() {printf("This is a %s car. It is on sale", carBrand)}  // 重写超类的抽象方法时，不需要使用override关键字，不过，如果加上override编译也不错报错
+  override def greeting() {println("Welcome to my BMW car!")}       // 重写超类的非抽象方法，必须使用override关键字
+}
+
+// 扩展类：继承抽象类
+class BYDCar extends Car {
+  override val carBrand = "BYD"                                     // 重写超类字段，需要使用override关键字，否则编译会报错
+  def info() {printf("This is a %s car. It is cheap.", carBrand)}   // 重写超类的抽象方法时，不需要使用override关键字，不过，如果加上override编译也不错报错
+  override def greeting() {println("Welcome to my BYD car!")}       // 重写超类的非抽象方法，必须使用override关键字
+}
+
+// ===============================================================
 class Person {
   private val lastId = 0
   private val id = Person.newPersonId()     // 调用了伴生对象中的方法，返回lastId，会自增
