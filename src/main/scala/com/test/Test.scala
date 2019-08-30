@@ -7,12 +7,18 @@ class ApplyTest{
   def greetingOfClass: Unit = {
     println("Greeting method in class is called.")
   }
+  def update(string: String): Unit = {
+    println("class update: " + string)
+  }
 }
 
 object ApplyTest{
   def apply() = {
     println("apply method in object is called")
     new ApplyTest()
+  }
+  def update(string: String): Unit = {
+    println("object update: " + string)
   }
 }
 
@@ -79,11 +85,13 @@ object Person {
     println(TestApplyObject("param2", 123))
 
     val a = ApplyTest() // 这里会调用伴生对象中的apply方法，返回伴生类的实例
+    ApplyTest() = "CYL"
     println("111111")
     a.greetingOfClass   // 调用伴生类的实例的方法
     println("222222")
     a()                 // 这里会调用伴生类中的apply方法
-
+    a() = "CCCCC"
+    
     println("333333")
     val b = new ApplyTest()
     println("444444")
