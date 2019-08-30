@@ -122,6 +122,13 @@ object Person {
     b()
 
     // Array中含有apply和update
-    Array("BigData","Hadoop","Spark")
+    // Array("BigData","Hadoop","Spark")
+
+    val myCar1 = new BMWCar()
+    val myCar2 = new BYDCar()
+    myCar1.greeting()
+    myCar1.info()
+    myCar2.greeting()
+    myCar2.info()
   }
 }
